@@ -14,6 +14,7 @@ import com.effigo.tools.support_api.exception.InvalidCredentialsException;
 import com.effigo.tools.support_api.exception.ResourceNotFoundException;
 import com.effigo.tools.support_api.model.User;
 import com.effigo.tools.support_api.repository.UserRepository;
+import com.effigo.tools.support_api.service.SupportHistoryService;
 import com.effigo.tools.support_api.service.UserService;
 
 @Service
