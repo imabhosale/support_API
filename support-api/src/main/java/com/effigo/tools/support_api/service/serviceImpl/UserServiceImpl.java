@@ -12,6 +12,7 @@ import com.effigo.tools.support_api.exception.InvalidCredentialsException;
 import com.effigo.tools.support_api.exception.ResourceNotFoundException;
 import com.effigo.tools.support_api.model.User;
 import com.effigo.tools.support_api.repository.UserRepository;
+import com.effigo.tools.support_api.service.SupportHistoryService;
 import com.effigo.tools.support_api.service.UserService;
 
 @Service
@@ -22,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private SupportHistoryService supportHistoryService;
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
@@ -31,6 +35,7 @@ public class UserServiceImpl implements UserService {
 
         User user = modelMapper.map(userDTO, User.class);
         User savedUser = userRepository.save(user);
+        supportHistoryService.logEvent(savedUser.getId(), "USER_CREATED", "User created successfully", "System");
         return modelMapper.map(savedUser, UserDTO.class);
     }
 
