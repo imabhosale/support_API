@@ -18,14 +18,15 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "role_name", nullable = false, length = 100)
+    @Column(name = "role_name", nullable = false, unique = true, length = 100)
     private String roleName;
+
 
     @Column(name = "created_on", nullable = false)
     private Timestamp createdOn;
 
     @Column(name = "created_by", nullable = false)
-    private Timestamp createdBy;
+    private String createdBy;
 
   
 }

@@ -7,4 +7,7 @@ import com.effigo.tools.support_api.model.Role;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
+
+	Object findByRoleName(String string);
+	 boolean existsByRoleName(String roleName);
 }

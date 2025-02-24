@@ -62,11 +62,12 @@ public class UserController {
 
     // Login with username and password
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> loginUser(@RequestParam String userName, @RequestParam String password) {
-        UserDTO userDTO = userService.loginUser(userName, password);
+    public ResponseEntity<UserDTO> loginUser(@RequestBody UserDTO loginRequest) {
+        UserDTO userDTO = userService.loginUser(loginRequest.getUserName(), loginRequest.getPassword());
         if (userDTO == null) {
             return ResponseEntity.status(401).body(null); // Unauthorized
         }
         return ResponseEntity.ok(userDTO);
     }
+
 }

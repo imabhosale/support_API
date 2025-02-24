@@ -9,6 +9,6 @@ public class RoleDTO {
 	  	private Long id;
 	    private String roleName;
 	    private Timestamp createdOn;
-	    private Timestamp createdBy;
+	    private String createdBy;
 
 }
