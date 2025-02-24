@@ -55,7 +55,6 @@ public class UserServiceImpl implements UserService {
 		User existingUser = userRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
 
-		
 		if (!existingUser.getEmail().equals(userDTO.getEmail()) && userRepository.existsByEmail(userDTO.getEmail())) {
 			throw new DuplicateResourceException("User with email '" + userDTO.getEmail() + "' already exists.");
 		}

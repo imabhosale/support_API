@@ -34,34 +34,34 @@ import com.effigo.tools.support_api.service.serviceImpl.UserServiceImpl;
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
 
-    @Mock
-    private UserRepository userRepository;
+	@Mock
+	private UserRepository userRepository;
 
-    @Mock
-    private ModelMapper modelMapper;
+	@Mock
+	private ModelMapper modelMapper;
 
-    @InjectMocks
-    private UserServiceImpl userService;
+	@InjectMocks
+	private UserServiceImpl userService;
 
-    private User user;
-    private UserDTO userDTO;
+	private User user;
+	private UserDTO userDTO;
 
-    @BeforeEach
-    void setUp() {
-        user = new User();
-        user.setId(1L);
-        user.setUserName("abhishek");
-        user.setEmail("abhishek@gmail.com");
-        user.setPassword("123");
+	@BeforeEach
+	void setUp() {
+		user = new User();
+		user.setId(1L);
+		user.setUserName("abhishek");
+		user.setEmail("abhishek@gmail.com");
+		user.setPassword("123");
 
-        userDTO = new UserDTO();
-        userDTO.setId(1L);
-        userDTO.setUserName("abhishek");
-        userDTO.setEmail("abhishek@gmail.com");
-        userDTO.setPassword("123");
-    }
+		userDTO = new UserDTO();
+		userDTO.setId(1L);
+		userDTO.setUserName("abhishek");
+		userDTO.setEmail("abhishek@gmail.com");
+		userDTO.setPassword("123");
+	}
 
-    @Test
+	@Test
     void testCreateUser_Success() {
         when(userRepository.existsByEmail(userDTO.getEmail())).thenReturn(false);
         when(modelMapper.map(userDTO, User.class)).thenReturn(user);
@@ -74,8 +74,8 @@ class UserServiceImplTest {
         assertEquals(userDTO.getEmail(), createdUser.getEmail());
     }
 
-    //negative test case
-    @Test
+	// negative test case
+	@Test
     void testCreateUser_DuplicateEmail() {
         when(userRepository.existsByEmail(userDTO.getEmail())).thenReturn(true);
 
@@ -85,24 +85,24 @@ class UserServiceImplTest {
 
         assertEquals("User with email '" + userDTO.getEmail() + "' already exists.", exception.getMessage());
     }
-    
-    //positive
-    @Test
-    void testGetAllUsers() {
-        List<User> users = Arrays.asList(user);
 
-        when(userRepository.findAll()).thenReturn(users);
-        when(modelMapper.map(user, UserDTO.class)).thenReturn(userDTO);
+	// positive
+	@Test
+	void testGetAllUsers() {
+		List<User> users = Arrays.asList(user);
 
-        List<UserDTO> result = userService.getAllUsers();
+		when(userRepository.findAll()).thenReturn(users);
+		when(modelMapper.map(user, UserDTO.class)).thenReturn(userDTO);
 
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals(userDTO.getEmail(), result.get(0).getEmail());
-    }
+		List<UserDTO> result = userService.getAllUsers();
 
-    //positive
-    @Test
+		assertNotNull(result);
+		assertEquals(1, result.size());
+		assertEquals(userDTO.getEmail(), result.get(0).getEmail());
+	}
+
+	// positive
+	@Test
     void testGetUserById_Success() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(modelMapper.map(user, UserDTO.class)).thenReturn(userDTO);
@@ -113,8 +113,8 @@ class UserServiceImplTest {
         assertEquals(userDTO.getEmail(), result.getEmail());
     }
 
-    //negative
-    @Test
+	// negative
+	@Test
     void testGetUserById_NotFound() {
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -124,42 +124,40 @@ class UserServiceImplTest {
 
         assertEquals("User not found with ID: 1", exception.getMessage());
     }
-    
-    //positive
 
-    @Test
-    void testUpdateUser_Success() {
-    	User existingUser = new User();
-    	existingUser.setId(1L);
-    	existingUser.setUserName("abhishek");
-    	existingUser.setPassword("123");
-    	existingUser.setEmail("abhishek@gmail.com");
-    	existingUser.setCreatedOn(Instant.now());
-    	existingUser.setCreatedBy("Admin");
+	// positive
 
+	@Test
+	void testUpdateUser_Success() {
+		User existingUser = new User();
+		existingUser.setId(1L);
+		existingUser.setUserName("abhishek");
+		existingUser.setPassword("123");
+		existingUser.setEmail("abhishek@gmail.com");
+		existingUser.setCreatedOn(Instant.now());
+		existingUser.setCreatedBy("Admin");
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
-        doAnswer(invocation -> {
-            UserDTO dto = invocation.getArgument(0);
-            User user = invocation.getArgument(1);
-            user.setUserName(dto.getUserName());
-            user.setEmail(dto.getEmail());
-            user.setPassword(dto.getPassword());
-            return null;
-        }).when(modelMapper).map(any(UserDTO.class), any(User.class));
+		when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
+		doAnswer(invocation -> {
+			UserDTO dto = invocation.getArgument(0);
+			User user = invocation.getArgument(1);
+			user.setUserName(dto.getUserName());
+			user.setEmail(dto.getEmail());
+			user.setPassword(dto.getPassword());
+			return null;
+		}).when(modelMapper).map(any(UserDTO.class), any(User.class));
 
-        when(userRepository.save(any(User.class))).thenReturn(existingUser);
-        when(modelMapper.map(any(User.class), eq(UserDTO.class))).thenReturn(userDTO);
+		when(userRepository.save(any(User.class))).thenReturn(existingUser);
+		when(modelMapper.map(any(User.class), eq(UserDTO.class))).thenReturn(userDTO);
 
-        UserDTO updatedUser = userService.updateUser(1L, userDTO);
+		UserDTO updatedUser = userService.updateUser(1L, userDTO);
 
-        assertNotNull(updatedUser);
-        assertEquals(userDTO.getEmail(), updatedUser.getEmail());
-    }
+		assertNotNull(updatedUser);
+		assertEquals(userDTO.getEmail(), updatedUser.getEmail());
+	}
 
-    
-    //negative
-    @Test
+	// negative
+	@Test
     void testUpdateUser_NotFound() {
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -170,9 +168,8 @@ class UserServiceImplTest {
         assertEquals("User not found with ID: 1", exception.getMessage());
     }
 
-    
-    //positive
-    @Test
+	// positive
+	@Test
     void testDeleteUser_Success() {
         when(userRepository.existsById(1L)).thenReturn(true);
         doNothing().when(userRepository).deleteById(1L);
@@ -180,9 +177,8 @@ class UserServiceImplTest {
         assertDoesNotThrow(() -> userService.deleteUser(1L));
     }
 
-    
-    //negative
-    @Test
+	// negative
+	@Test
     void testDeleteUser_NotFound() {
         when(userRepository.existsById(1L)).thenReturn(false);
 
@@ -193,8 +189,8 @@ class UserServiceImplTest {
         assertEquals("User not found with ID: 1", exception.getMessage());
     }
 
-    //positive
-    @Test
+	// positive
+	@Test
     void testLoginUser_Success() {
         when(userRepository.findByUserNameAndPassword("abhishek", "123")).thenReturn(user);
         when(modelMapper.map(user, UserDTO.class)).thenReturn(userDTO);
@@ -204,10 +200,10 @@ class UserServiceImplTest {
         assertNotNull(loggedInUser);
         assertEquals(userDTO.getEmail(), loggedInUser.getEmail());
     }
-    
-    //negative
 
-    @Test
+	// negative
+
+	@Test
     void testLoginUser_InvalidCredentials() {
         when(userRepository.findByUserNameAndPassword("abhi", "wrongpassword")).thenReturn(null);
 

@@ -27,35 +27,35 @@ import com.effigo.tools.support_api.model.Role;
 import com.effigo.tools.support_api.repository.RoleRepository;
 import com.effigo.tools.support_api.service.serviceImpl.RoleServiceImpl;
 
-@ExtendWith(MockitoExtension.class) 
+@ExtendWith(MockitoExtension.class)
 class RoleServiceImplTest {
 
-    @Mock
-    private RoleRepository roleRepository; // Mock the database
+	@Mock
+	private RoleRepository roleRepository; // Mock the database
 
-    @Mock
-    private ModelMapper modelMapper; // Mock ModelMapper
+	@Mock
+	private ModelMapper modelMapper; // Mock ModelMapper
 
-    @InjectMocks
-    private RoleServiceImpl roleService;
+	@InjectMocks
+	private RoleServiceImpl roleService;
 
-    private Role role;
-    private RoleDTO roleDTO;
+	private Role role;
+	private RoleDTO roleDTO;
 
-    @BeforeEach
-    void setUp() {
-        role = new Role();
-        role.setId(1L);
-        role.setRoleName("Admin");
-        role.setCreatedOn(new Timestamp(System.currentTimeMillis()));
-        role.setCreatedBy("System");
+	@BeforeEach
+	void setUp() {
+		role = new Role();
+		role.setId(1L);
+		role.setRoleName("Admin");
+		role.setCreatedOn(new Timestamp(System.currentTimeMillis()));
+		role.setCreatedBy("System");
 
-        roleDTO = new RoleDTO();
-        roleDTO.setRoleName("Admin");
-    }
+		roleDTO = new RoleDTO();
+		roleDTO.setRoleName("Admin");
+	}
 
-    // Positive Test Case: Create Role Successfully
-    @Test
+	// Positive Test Case: Create Role Successfully
+	@Test
     void testCreateRole_Success() {
         when(roleRepository.save(any(Role.class))).thenReturn(role);
         when(modelMapper.map(any(RoleDTO.class), eq(Role.class))).thenReturn(role);
@@ -67,8 +67,8 @@ class RoleServiceImplTest {
         assertEquals("Admin", createdRole.getRoleName());
     }
 
- // Negative Test Case: Creating Duplicate Role
-    @Test
+	// Negative Test Case: Creating Duplicate Role
+	@Test
     void testCreateRole_DuplicateRoleName() {
         when(roleRepository.existsByRoleName("Admin")).thenReturn(true);
 
@@ -79,9 +79,8 @@ class RoleServiceImplTest {
         assertEquals("Role with name 'Admin' already exists.", exception.getMessage());
     }
 
-
-    //Positive Test Case: Fetch Role by ID
-    @Test
+	// Positive Test Case: Fetch Role by ID
+	@Test
     void testGetRoleById_Success() {
         when(roleRepository.findById(1L)).thenReturn(Optional.of(role));
         when(modelMapper.map(any(Role.class), eq(RoleDTO.class))).thenReturn(roleDTO);
@@ -92,8 +91,8 @@ class RoleServiceImplTest {
         assertEquals("Admin", foundRole.getRoleName());
     }
 
-    //Negative Test Case: Fetch Non-Existing Role
-    @Test
+	// Negative Test Case: Fetch Non-Existing Role
+	@Test
     void testGetRoleById_NotFound() {
         when(roleRepository.findById(2L)).thenReturn(Optional.empty());
 
@@ -104,8 +103,8 @@ class RoleServiceImplTest {
         assertEquals("Role not found with ID: 2", exception.getMessage());
     }
 
-    // Positive Test Case: Delete Role Successfully
-    @Test
+	// Positive Test Case: Delete Role Successfully
+	@Test
     void testDeleteRole_Success() {
         when(roleRepository.existsById(1L)).thenReturn(true);
         doNothing().when(roleRepository).deleteById(1L);
@@ -113,8 +112,8 @@ class RoleServiceImplTest {
         assertDoesNotThrow(() -> roleService.deleteRole(1L));
     }
 
-    //Negative Test Case: Delete Non-Existing Role
-    @Test
+	// Negative Test Case: Delete Non-Existing Role
+	@Test
     void testDeleteRole_NotFound() {
         when(roleRepository.existsById(2L)).thenReturn(false);
 
