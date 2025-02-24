@@ -24,6 +24,7 @@ public class RoleController {
         return ResponseEntity.ok(createdRole);
     }
 
+
     // Get all roles
     @GetMapping
     public ResponseEntity<List<RoleDTO>> getAllRoles() {
